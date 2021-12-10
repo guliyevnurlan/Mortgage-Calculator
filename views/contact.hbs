@@ -1,0 +1,54 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Home Page</title>
+		<meta name="description" content="form to add new books">
+		<meta name="author" content="Mark Tyers">
+		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
+		<script type="module" src="/main.js"></script>
+	</head>
+	<body>
+		<header>
+			<img src="/images/logo.jpeg">
+          
+             <nav>
+                <ul>
+                    <li><a href="/">Home</a> </li>
+                    {{#if authorised}}
+              <li><a href="/addm">Mortgage Calculator</a></li>
+                    <li><a href="/fincialData">Financial Data</a></li>
+                    {{/if}}
+                    <li><a href="/contactus">Contact Us</a></li>
+                    <li><a href="/aboutus">About Us</a></li>
+                    </ul>
+            </nav>
+               
+			{{#if authorised}}
+				<a href="/logout">Log out</a>
+			{{else}}
+				<a href="/login">Log in</a>
+			{{/if}}
+		</header>
+		<main>
+		<h2> CONTACT US </h2>
+            
+          <div>
+              <p>We're on hand to arrange a phone or video call with one of our qualified mortgage professionals. </p>
+              <p>Call Us on +37062652903</p>
+              <b>Opening Hours</b>
+               <ul>
+                   
+                  <li>Mon-Fri 8am-6pm</li>
+                  <li>Sat 9am-4pm</li>
+                  <li>Sun Closed</li>
+                  <li>Excluding Public Holidays</li>
+              </ul>
+              
+              <iframe src="https://www.google.com/maps/d/embed?mid=1K_pik8PGMICK_OSjgSyo6OZ-GMk&ehbc=2E312F" width="100%" height="650px" frameborder="0" allowfullscreen></iframe>
+          </div>
+		</main>
+	</body>
+</html>

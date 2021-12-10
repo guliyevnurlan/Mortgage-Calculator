@@ -1,0 +1,145 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Home Page</title>
+		<meta name="description" content="form to add new books">
+		<meta name="author" content="Mark Tyers">
+		<link href="/style.css" type="text/css" rel="stylesheet" />
+		<script type="module" src="/main.js"></script>
+	</head>
+	<body>
+		<header>
+			<img src="/images/logo.jpeg">
+            
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a> </li>
+                    {{#if authorised}}
+                 <li><a href="/addm">Mortgage Calculator</a></li>
+                    <li><a href="/fincialData">Financial Data</a></li>
+                    {{/if}}
+                    <li><a href="contactus">Contact Us</a></li>
+                    <li><a href="/aboutus">About Us</a></li>
+                    </ul>
+            </nav>
+
+            
+			{{#if authorised}}
+				<a href="/logout">Log out</a>
+			{{else}}
+				<a href="/login">Log in</a>
+			{{/if}}
+		</header>
+	<main>
+		<h2> Financial Data </h2>
+        <form action="/FinancialData" method="post">
+            
+        
+        <br>
+         <br>
+         <br>
+        <label>Average Monthly Wage (£ )</label>
+         <input type="text"  name="Monthlywage" value="0"  id="Monthlywage">
+<!--             <label id="amount"></label> -->
+       <br>
+         <br>
+        <label>Monthly Outgoings  (£ ) </label>
+         <input type="text"  value="0" name="montlyOutgoings"  id="monthlyOutgoings" >
+<!--             <label id="damount"></label> -->
+        <br>
+         <br>
+        <label>Monthly Rents or mortgage </label>
+         <input type="text" value="0" name="monthlyRent" id="monthlyRent">
+<!--             <label id="year"> </label> -->
+             <br><br>
+            <label>Wage Left</label>
+             <input type="text" value="0" disabled name="WageLeft" id="WageLeft">
+            <br><br>
+            <label>Amount to Barrow </label>
+             <input type="text" value="0" name="monthlyAmount" id="monthlyAmount">
+            <br><br>
+            <label>Amount to Deposit </label>
+             <input type="text" value="0"  name="totalAmount" id="totalAmount">
+           
+            <br>
+            <br>
+		<button type="submit" >Add Financial Data</button>
+            </form>
+        
+        
+         {{#if authorised}}
+        
+        {{#if Options}}
+        
+        
+        <br>
+        <br>
+        <br>
+        <table id="optionTable" >
+  <tr>
+    <th>Monthly Wage</th>
+    <th>Monthly Outgoings Amount</th>
+    <th>Monthly Rent</th>
+    <th >Wage Left</th>
+       <th>Amount To Borrow</th>
+       <th>Amount To Deposit</th>
+  </tr>
+             {{#each Options}}
+                 <tr>
+                    <td>{{monthlyWage}} £</td>
+                    <td>{{monthlyOutgoing}} £</td>
+                    <td>{{monthlyRent}} £</td>
+                    <td >{{wageLeft}} £</td>
+                    <td >{{amountToDeposit}} £</td>
+                    <td >{{amounttoBorrow}} £</td>
+                     
+                     
+                </tr>
+  
+            {{/each}}
+
+        {{else}}
+            <br />
+            <lable>There is no option saved.</lable>
+        {{/if}}
+            
+            
+            {{else}}
+            
+          
+				
+		{{/if}}
+	</main>
+	</body>
+    <script >
+    var monthlyWage = document.getElementById("Monthlywage");
+    var monthltOutGoing = document.getElementById("monthlyOutgoings");
+    var monthlyRent = document.getElementById("monthlyRent");
+    var WageLeft = document.getElementById("WageLeft");
+     
+        monthlyWage.addEventListener("change", () => {
+           WageLeft.value =  calculateWageLeftThisMonth();
+        })
+ monthltOutGoing.addEventListener("change", () => {
+           WageLeft.value =  calculateWageLeftThisMonth();
+        });
+        
+         monthlyRent.addEventListener("change", () => {
+           WageLeft.value =  calculateWageLeftThisMonth();
+        })
+        
+        function calculateWageLeftThisMonth() {
+         return  (+monthlyWage.value - +monthltOutGoing.value - +monthlyRent.value );
+        }
+
+       
+        
+       
+    
+        
+        
+    </script>
+</html>

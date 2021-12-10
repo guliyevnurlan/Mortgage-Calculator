@@ -1,0 +1,50 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Home Page</title>
+		<meta name="description" content="form to add new books">
+		<meta name="author" content="Mark Tyers">
+		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
+		<script type="module" src="/main.js"></script>
+	</head>
+	<body>
+		<header>
+			<img src="/images/logo.jpeg">
+          
+             <nav>
+                <ul>
+                    <li><a href="/">Home</a> </li>
+                    {{#if authorised}}
+                   <li><a href="/addm">Mortgage Calculator</a></li>
+                    <li><a href="/fincialData">Financial Data</a></li>
+                    {{/if}}
+                    <li><a href="/contactus">Contact Us</a></li>
+                    <li><a href="/aboutus">About Us</a></li>
+                    </ul>
+            </nav>
+               
+			{{#if authorised}}
+				<a href="/logout">Log out</a>
+			{{else}}
+				<a href="/login">Log in</a>
+			{{/if}}
+		</header>
+		<main>
+		<h2> ABOUT US </h2>
+            
+          <div>
+              
+              <b>Vission</b>
+              <br>
+              <p>A mortgage company is a specialized financial firm engaged in the business of originating and/or funding mortgages for residential or commercial property. A mortgage company is often just the originator of a loan; it markets itself to potential borrowers and seeks funding from one of several client financial institutions that provide the capital for the mortgage itself.</p>
+    
+               
+              
+              
+          </div>
+		</main>
+	</body>
+</html>

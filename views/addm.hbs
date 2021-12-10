@@ -1,0 +1,251 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Home Page</title>
+		<meta name="description" content="form to add new books">
+		<meta name="author" content="Mark Tyers">
+		<link href="/style.css" type="text/css" rel="stylesheet" />
+		<script type="module" src="/main.js"></script>
+	</head>
+	<body>
+		<header>
+		<img src="/images/logo.jpeg">
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a> </li>
+                    {{#if authorised}}
+                  <li><a href="/addm">Mortgage Calculator</a></li>
+                    <li><a href="/fincialData">Financial Data</a></li>
+                    {{/if}}
+                    <li><a href="contactus">Contact Us</a></li>
+                    <li><a href="/aboutus">About Us</a></li>
+                    </ul>
+            </nav>
+
+            
+			{{#if authorised}}
+				<a href="/logout">Log out</a>
+			{{else}}
+				<a href="/login">Log in</a>
+			{{/if}}
+		</header>
+	<main>
+		<h2> Mortgate Calculator </h2>
+        <form action="/addOption" method="post">
+            
+        
+        <br>
+         
+        <label>Amount to barrow in (£ )</label>
+         <input type="range" min="50" max="800000" name="planamount" value="399975"  id="planamount"><label id="amount"></label>
+       <br>
+         <br>
+        <label>Deposit in (£ ) </label>
+         <input type="range" min="5" max="300000" value="149997" name="plandeposit"  id="plandeposit" ><label id="damount"></label>
+        <br>
+         <br>
+        <label>Years </label>
+         <input type="range" min="5" max="30" value="12" name="years" id="years"><label id="year"> </label>
+             <br><br>
+            <label id="dynamicintrestrate">Interest Rate 3% </label>
+            <br><br>
+             <input type="text" value="" hidden name="monthlyAmount" id="monthlyAmount">
+             <input type="text" value="" hidden name="totalAmount" id="totalAmount">
+            <h3 id="mortgageValue">  0.0 </h3>
+            <br>
+            <br>
+		<button type="submit"  >Add Option</button>
+            </form>
+        
+        
+        {{#if authorised}}
+        
+        {{#if Options}}
+        
+        
+        <br>
+        <br>
+        <br>
+        <table id="optionTable" >
+  <tr>
+    <th>Planned Amount</th>
+    <th>Deposite Amount</th>
+    <th>Monthly Mortgage</th>
+    <th  onclick="sortTable(3)" id="years">Years</th>
+       <th onclick="sortTable(4)">Total Amount With Interest</th>
+       <th></th>
+  </tr>
+             {{#each Options}}
+                 <tr>
+                    <td>{{totalAmount}} £</td>
+                    <td>{{amounttoDeposit}} £</td>
+                    <td>{{monthlyMortgage}} £</td>
+                    <td >{{Years}}</td>
+                    <td >{{totalAmountwithIntrestRate}} </td>
+                     
+                      <td>
+                           <form action="/deleteOption" method="post">
+                             <input type="text" value="{{id}}" hidden id="{{id}}" name="optionId" />
+
+                               <button type="submit"  >Delete</button>
+                                   
+                                   
+                          </form>
+                      </td>
+                </tr>
+  
+            {{/each}}
+
+        {{else}}
+            
+        
+            <br>
+            <br>
+            <br>
+           
+            <lable>There is no option saved.</lable>
+        {{/if}}
+            
+            
+            {{else}}
+            
+          
+				
+		{{/if}}
+	</main>
+	</body>
+    <script >
+        
+            
+       function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("optionTable");
+  switching = true;
+  dir = "asc";
+  while (switching) {
+    
+    switching = false;
+    rows = table.rows;
+    
+    for (i = 1; i < (rows.length - 1); i++) {
+    
+      shouldSwitch = false;
+    
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+    
+      if (dir == "asc") {
+          
+
+                  if (Number(x.innerHTML) > Number(y.innerHTML)) {
+  shouldSwitch = true;
+  break;
+}
+      } else if (dir == "desc") {
+         if (Number(x.innerHTML) < Number(y.innerHTML)) {
+  shouldSwitch = true;
+  break;
+}
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      
+      switchcount ++;
+    } else {
+            if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+        
+        let interestRate = 5; 
+    var slider1 = document.getElementById("planamount");
+     var output1 = document.getElementById("amount");
+output1.innerHTML = slider1.value + " £"; 
+slider1.oninput = function() {
+  output1.innerHTML = this.value + " £ ";
+    renderMortgageValue();
+}
+        
+           var slider2 = document.getElementById("plandeposit");
+     var output2 = document.getElementById("damount");
+output2.innerHTML = slider2.value + " £"; 
+slider2.oninput = function() {
+  output2.innerHTML = this.value + " £";
+    renderMortgageValue();
+}
+        
+           var slider3 = document.getElementById("years");
+     var output3 = document.getElementById("year");
+output3.innerHTML = slider3.value + " £"; 
+slider3.oninput = function() {
+  output3.innerHTML = this.value + " Years";
+    renderMortgageValue();
+}
+        
+         renderMortgageValue();
+        
+     function   calculateMonthlyIntrestRate(intrestRate){
+         
+            return ((intrestRate / 100) / 12 ) 
+        }    
+        
+        function calculateMonthsFromYears(numberofYears) {
+            return numberofYears * 12;
+        }
+        
+        function calculateTotalAmountWithIntrest(monthlyMortgage , numberofYears) {
+            return (parseFloat(parseFloat(monthlyMortgage).toFixed(2) * calculateMonthsFromYears(numberofYears)).toFixed(2))  
+        }
+        
+        function calculateMortgage(p,i , n) {
+          return (p * i * (Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1)); 
+        }
+        
+        function CalculatePercentage() {
+            return Math.floor((slider2.value / slider1.value ) * 100)
+        }
+        
+        
+        function renderMortgageValue() {
+        if( CalculatePercentage() >= 5 && CalculatePercentage() <= 9 ) {
+            interestRate = 6;
+            document.getElementById('dynamicintrestrate').innerHTML = "Interest Rate is 6%"
+        }    
+        if(CalculatePercentage() >= 10 && CalculatePercentage() <= 20) {
+            interestRate = 4;
+            document.getElementById('dynamicintrestrate').innerHTML = "Interest Rate is 4%"
+        }
+            if(CalculatePercentage() >= 21 && CalculatePercentage() <= 30) {
+            interestRate = 3;
+                document.getElementById('dynamicintrestrate').innerHTML = "Interest Rate is 3%"
+        }
+        if(CalculatePercentage() >= 31) {
+            interestRate = 2.3;
+            document.getElementById('dynamicintrestrate').innerHTML = "Interest Rate is 2.3%"
+        }
+            
+            
+       const mortgage = calculateMortgage(slider1.value * 1 , calculateMonthlyIntrestRate(interestRate) , calculateMonthsFromYears(slider3.value * 1))     
+       var mortgageValue = document.getElementById("mortgageValue");
+        document.getElementById("monthlyAmount").value =  parseFloat(mortgage).toFixed(2);
+mortgageValue.innerHTML = "Monthly Mortgage: £ "  + parseFloat(mortgage).toFixed(2) ; 
+            document.getElementById("totalAmount").value = calculateTotalAmountWithIntrest(parseFloat(mortgage).toFixed(2) , slider3.value);
+            console.log(interestRate)
+            
+       }
+       
+        
+       
+    
+        
+        
+    </script>
+</html>
